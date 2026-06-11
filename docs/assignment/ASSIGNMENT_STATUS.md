@@ -10,7 +10,6 @@ Remaining human-only items:
 - Add group member names and IDs.
 - Add lecturer and course details.
 - Add final submission date.
-- Upload the project to GitHub and paste the repository link into the report.
 - Add final screenshots to presentation slides if your lecturer requires visual screenshots instead of text evidence files.
 
 ## Completed Work
@@ -29,6 +28,7 @@ Remaining human-only items:
 | UI automation evidence | Done | `docs/assignment/evidence/playwright-output.txt` |
 | Performance test | Done | `docs/assignment/evidence/k6-output.txt` |
 | Performance graph | Done | `docs/assignment/evidence/response-time-vs-user-load.svg` |
+| GitHub repository | Done | https://github.com/faintedsnow/Stock_Controller_system_testing- |
 | Presentation outline | Done | `docs/assignment/PRESENTATION_SLIDES_OUTLINE.md` |
 
 ## Latest Verification
@@ -58,4 +58,3 @@ K6: 50 concurrent users reached, 0% HTTP failure, p95 response time 12.08s at 50
 - API CRUD flow is covered with environment variables and bearer token authentication.
 - UI automation covers login and inventory creation workflow.
 - Performance testing shows availability at 50 concurrent users but slow response time under load.
-

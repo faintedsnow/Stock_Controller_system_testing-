@@ -12,7 +12,7 @@
 | Lecturer | Pending group input |
 | Course | Pending group input |
 | Submission Date | Pending group input |
-| GitHub Repository | Pending: upload project to GitHub and add repository link |
+| GitHub Repository | https://github.com/faintedsnow/Stock_Controller_system_testing- |
 
 ## 1. Executive Summary
 
@@ -502,7 +502,7 @@ docs/assignment/evidence/k6-performance-table.md
 | Postman API collection evidence | Done | `docs/assignment/evidence/newman-run-output.txt` |
 | UI automation evidence | Done | `docs/assignment/evidence/playwright-output.txt` |
 | Performance analysis report | Done | `docs/assignment/evidence/k6-output.txt`, `docs/assignment/evidence/response-time-vs-user-load.svg` |
-| GitHub repository link | Pending group action | Upload the project to GitHub and paste the repository URL in the title page |
+| GitHub repository link | Done | https://github.com/faintedsnow/Stock_Controller_system_testing- |
 | 10-minute presentation slides | Draft content prepared in report; final visual slide deck still needs group names/screenshots |
 
 ## 15. Report Update Log
