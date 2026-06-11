@@ -1,0 +1,144 @@
+{
+    "metrics": {
+        "http_req_receiving": {
+            "avg": 2.917755660377359,
+            "min": 0.7629,
+            "med": 2.8419499999999998,
+            "max": 5.1814,
+            "p(90)": 3.84645,
+            "p(95)": 4.211374999999999
+        },
+        "checks": {
+            "passes": 156,
+            "fails": 0,
+            "value": 1
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 106,
+            "value": 0
+        },
+        "http_req_waiting": {
+            "med": 5774.14275,
+            "max": 7169.3268,
+            "p(90)": 6765.43525,
+            "p(95)": 7074.538925,
+            "avg": 5032.6264632075445,
+            "min": 210.6621
+        },
+        "data_sent": {
+            "count": 55007,
+            "rate": 1961.4197118655295
+        },
+        "iteration_duration": {
+            "med": 12137.543549999999,
+            "max": 13948.9655,
+            "p(90)": 12753.98638,
+            "p(95)": 13237.726944999999,
+            "avg": 11241.767546153847,
+            "min": 6870.188
+        },
+        "http_req_blocked": {
+            "min": 0,
+            "med": 0.98875,
+            "max": 1.8345,
+            "p(90)": 1.2929,
+            "p(95)": 1.518375,
+            "avg": 0.8890301886792452
+        },
+        "http_req_duration": {
+            "p(90)": 6768.6412,
+            "p(95)": 7076.8545,
+            "avg": 5035.600376415094,
+            "min": 215.2781,
+            "med": 5776.746349999999,
+            "max": 7172.0816
+        },
+        "http_req_connecting": {
+            "avg": 0.819657547169811,
+            "min": 0,
+            "med": 0.7321,
+            "max": 1.8345,
+            "p(90)": 1.1861,
+            "p(95)": 1.4723
+        },
+        "vus": {
+            "value": 1,
+            "min": 0,
+            "max": 25
+        },
+        "iterations": {
+            "count": 52,
+            "rate": 1.8541971933937051
+        },
+        "http_req_sending": {
+            "p(90)": 0.2557,
+            "p(95)": 0.5348,
+            "avg": 0.05615754716981132,
+            "min": 0,
+            "med": 0,
+            "max": 0.5796
+        },
+        "http_req_tls_handshaking": {
+            "min": 0,
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0
+        },
+        "http_reqs": {
+            "count": 106,
+            "rate": 3.7797096634563987
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 5035.600376415094,
+            "min": 215.2781,
+            "med": 5776.746349999999,
+            "max": 7172.0816,
+            "p(90)": 6768.6412,
+            "p(95)": 7076.8545
+        },
+        "data_received": {
+            "count": 1464657,
+            "rate": 52226.20959008546
+        },
+        "vus_max": {
+            "value": 25,
+            "min": 25,
+            "max": 25
+        }
+    },
+    "setup_data": {
+        "token": "MTN8MTc4MTE2NDY0OXw3MGNjY2Y1YzUwMmQ2ZjI2ZmMwYjg3NTM4NDdmNDliNmRmMjdjYTVlYzkzYWRlNjRhMjQ5MjhhMDljZDdlODVl"
+    },
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "login page returns 200": {
+                    "name": "login page returns 200",
+                    "path": "::login page returns 200",
+                    "id": "a66defce930564cfb6b76f9a6cc81f93",
+                    "passes": 52,
+                    "fails": 0
+                },
+                "inventory API returns 200": {
+                    "name": "inventory API returns 200",
+                    "path": "::inventory API returns 200",
+                    "id": "d67dfbc958dce191149e54ec692a7869",
+                    "passes": 52,
+                    "fails": 0
+                },
+                "inventory API returns data array": {
+                    "name": "inventory API returns data array",
+                    "path": "::inventory API returns data array",
+                    "id": "d639108c33783980ca5d8f941d660e4d",
+                    "passes": 52,
+                    "fails": 0
+                }
+            }
+    }
+}

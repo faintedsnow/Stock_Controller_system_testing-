@@ -1,0 +1,211 @@
+{
+  "info": {
+    "_postman_id": "stock-controller-assignment",
+    "name": "Stock Controller API - Quality Engineering Assignment",
+    "description": "Postman collection for Laravel Stock Controller assignment API. Run Register once, then Login to save the bearer token.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "01 Register User",
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"API Tester\",\n  \"email\": \"{{api_email}}\",\n  \"password\": \"{{api_password}}\",\n  \"password_confirmation\": \"{{api_password}}\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/register"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 201 or already registered validation', function () { pm.expect([201, 422]).to.include(pm.response.code); });",
+        "pm.test('Response is JSON', function () { pm.response.to.be.json; });",
+        "if (pm.response.code === 201) { pm.environment.set('token', pm.response.json().token); }"
+      ] } }]
+    },
+    {
+      "name": "02 Login User",
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{api_email}}\",\n  \"password\": \"{{api_password}}\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/login"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Token exists', function () { pm.expect(pm.response.json().token).to.be.a('string'); });",
+        "pm.environment.set('token', pm.response.json().token);"
+      ] } }]
+    },
+    {
+      "name": "03 Create Supplier",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Supplier {{$timestamp}}\",\n  \"contact_person\": \"Dara\",\n  \"email\": \"supplier{{$timestamp}}@example.com\",\n  \"phone\": \"012345678\",\n  \"address\": \"Phnom Penh\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/suppliers"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+        "pm.test('Supplier id exists', function () { pm.expect(pm.response.json().data.id).to.be.a('number'); });",
+        "pm.environment.set('supplier_id', pm.response.json().data.id);"
+      ] } }]
+    },
+    {
+      "name": "04 List Suppliers",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/suppliers"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Data is an array', function () { pm.expect(pm.response.json().data).to.be.an('array'); });"
+      ] } }]
+    },
+    {
+      "name": "05 Create Inventory Item",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"USB Cable {{$timestamp}}\",\n  \"sku\": \"USB-{{$timestamp}}\",\n  \"current_stock\": 20,\n  \"minimum_stock\": 5,\n  \"price\": 3.5,\n  \"supplier_id\": {{supplier_id}},\n  \"description\": \"Type-C cable\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/inventory"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+        "pm.test('Inventory id exists', function () { pm.expect(pm.response.json().data.id).to.be.a('number'); });",
+        "pm.environment.set('inventory_id', pm.response.json().data.id);"
+      ] } }]
+    },
+    {
+      "name": "06 List Inventory",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/inventory"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Data is an array', function () { pm.expect(pm.response.json().data).to.be.an('array'); });"
+      ] } }]
+    },
+    {
+      "name": "07 Update Inventory Item",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"USB Cable Updated\",\n  \"sku\": \"USB-UPD-{{inventory_id}}\",\n  \"current_stock\": 25,\n  \"minimum_stock\": 5,\n  \"price\": 4.25,\n  \"supplier_id\": {{supplier_id}},\n  \"description\": \"Updated Type-C cable\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/inventory/{{inventory_id}}"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Updated name returned', function () { pm.expect(pm.response.json().data.name).to.eql('USB Cable Updated'); });"
+      ] } }]
+    },
+    {
+      "name": "08 Remove Stock",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"remove\",\n  \"quantity\": 3\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/inventory/{{inventory_id}}/stock"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Current stock is numeric', function () { pm.expect(pm.response.json().data.current_stock).to.be.a('number'); });"
+      ] } }]
+    },
+    {
+      "name": "09 Create Restock Order",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"inventory_item_id\": {{inventory_id}},\n  \"supplier_id\": {{supplier_id}},\n  \"quantity_ordered\": 10,\n  \"total_cost\": 45,\n  \"expected_date\": \"2030-01-01\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/restock-orders"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+        "pm.test('Status is pending', function () { pm.expect(pm.response.json().data.status).to.eql('pending'); });",
+        "pm.environment.set('restock_order_id', pm.response.json().data.id);"
+      ] } }]
+    },
+    {
+      "name": "10 Receive Restock Order",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"quantity_received\": 10,\n  \"received_date\": \"2026-06-11\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{base_url}}/api/v1/restock-orders/{{restock_order_id}}/receive"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Order completed', function () { pm.expect(pm.response.json().data.status).to.eql('completed'); });"
+      ] } }]
+    },
+    {
+      "name": "11 Delete Inventory Item",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/inventory/{{inventory_id}}"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Delete message returned', function () { pm.expect(pm.response.json().message).to.include('deleted'); });"
+      ] } }]
+    },
+    {
+      "name": "12 Delete Supplier",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/suppliers/{{supplier_id}}"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+        "pm.test('Delete message returned', function () { pm.expect(pm.response.json().message).to.include('deleted'); });"
+      ] } }]
+    }
+  ]
+}
