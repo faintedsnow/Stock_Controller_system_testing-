@@ -23,34 +23,35 @@
 
 | Test Case ID | Module | Test Title | Technique Used | Pre-conditions | Test Steps | Test Data | Expected Result | Actual Result | Status |
 |---|---|---|---|---|---|---|---|---|---|
-| TC-AUTH-001 | Authentication | Register with valid data | Equivalence Partitioning | User is on Register page | Enter valid name, email, password, confirmation. Submit. | New email, password >= 8 chars | Account is created and user can log in | Fill during execution | Pending |
-| TC-AUTH-002 | Authentication | Register with duplicate email | Error Guessing | Existing user email exists | Register using the same email again | Existing email | Validation error is shown | Fill during execution | Pending |
-| TC-AUTH-003 | Authentication | Login with valid credentials | Happy Path | Registered user exists | Open login, enter valid email/password, submit | Valid account | Dashboard is displayed | Fill during execution | Pending |
-| TC-AUTH-004 | Authentication | Login with wrong password | Sad Path | Registered user exists | Enter valid email and wrong password | Wrong password | Login is rejected with error | Fill during execution | Pending |
-| TC-INV-001 | Inventory | Create inventory item with valid fields | Equivalence Partitioning | User is logged in | Open create inventory, fill fields, submit | Name, unique SKU, stock 20, minimum 5, price 3.50 | Item appears in inventory list | Fill during execution | Pending |
-| TC-INV-002 | Inventory | Reject duplicate SKU | Error Guessing | Existing item SKU exists | Create another item using same SKU | Duplicate SKU | Validation error is shown | Fill during execution | Pending |
-| TC-INV-003 | Inventory | Reject negative stock | Boundary Value Analysis | User is logged in | Create item with current stock -1 | current_stock = -1 | Validation error is shown | Fill during execution | Pending |
-| TC-INV-004 | Inventory | Remove stock below zero | Boundary Value Analysis | Item has current stock 4 | Remove quantity 99 | quantity = 99 | Stock does not become negative | Fill during execution | Pending |
-| TC-SUP-001 | Suppliers | Create supplier with valid data | Happy Path | User is logged in | Open supplier create form, submit valid data | Supplier name and email | Supplier appears in supplier list | Fill during execution | Pending |
-| TC-SUP-002 | Suppliers | Reject invalid supplier email | Equivalence Partitioning | User is logged in | Create supplier with invalid email | email = abc | Validation error is shown | Fill during execution | Pending |
-| TC-RESTOCK-001 | Restock | Create valid restock order | Happy Path | Supplier and item exist | Create restock order | Quantity 10, future expected date | Pending restock order is created | Fill during execution | Pending |
-| TC-RESTOCK-002 | Restock | Reject receive quantity above ordered quantity | Boundary Value Analysis | Restock order quantity is 10 | Receive quantity 11 | quantity_received = 11 | Validation error is shown | Fill during execution | Pending |
+| TC-AUTH-001 | Authentication | Register with valid data | Equivalence Partitioning | User is on Register page | Enter valid name, email, password, confirmation. Submit. | New email, password >= 8 chars | Account is created and user can log in | User was created and redirected to login | Pass |
+| TC-AUTH-002 | Authentication | Register with duplicate email | Error Guessing | Existing user email exists | Register using the same email again | Existing email | Validation error is shown | Duplicate email was rejected with validation error | Pass |
+| TC-AUTH-003 | Authentication | Login with valid credentials | Happy Path | Registered user exists | Open login, enter valid email/password, submit | Valid account | Dashboard is displayed | User was redirected to dashboard | Pass |
+| TC-AUTH-004 | Authentication | Login with wrong password | Sad Path | Registered user exists | Enter valid email and wrong password | Wrong password | Login is rejected with error | Login was rejected with an email error | Pass |
+| TC-INV-001 | Inventory | Create inventory item with valid fields | Equivalence Partitioning | User is logged in | Open create inventory, fill fields, submit | Name, unique SKU, stock 20, minimum 5, price 3.50 | Item appears in inventory list | Item was created in database and redirected to inventory | Pass |
+| TC-INV-002 | Inventory | Reject duplicate SKU | Error Guessing | Existing item SKU exists | Create another item using same SKU | Duplicate SKU | Validation error is shown | Duplicate SKU was rejected | Pass |
+| TC-INV-003 | Inventory | Reject negative stock | Boundary Value Analysis | User is logged in | Create item with current stock -1 | current_stock = -1 | Validation error is shown | Negative stock was rejected | Pass |
+| TC-INV-004 | Inventory | Remove stock below zero | Boundary Value Analysis | Item has current stock 4 | Remove quantity 99 | quantity = 99 | Stock does not become negative | Stock was clamped to 0 | Pass |
+| TC-SUP-001 | Suppliers | Create supplier with valid data | Happy Path | User is logged in | Open supplier create form, submit valid data | Supplier name and email | Supplier appears in supplier list | Supplier was created in database | Pass |
+| TC-SUP-002 | Suppliers | Reject invalid supplier email | Equivalence Partitioning | User is logged in | Create supplier with invalid email | email = abc | Validation error is shown | Invalid email was rejected | Pass |
+| TC-RESTOCK-001 | Restock | Create valid restock order | Happy Path | Supplier and item exist | Create restock order | Quantity 10, future expected date | Pending restock order is created | Pending restock order was created | Pass |
+| TC-RESTOCK-002 | Restock | Reject receive quantity above ordered quantity | Boundary Value Analysis | Restock order quantity is 10 | Receive quantity 11 | quantity_received = 11 | Validation error is shown | Validation error was shown and order stayed pending after fix | Pass |
 
 ## Exploratory Test Charters
 
 | Charter ID | Mission | Areas | Time Box | Risks To Hunt | Findings |
 |---|---|---|---|---|---|
-| CH-001 | Explore authentication reliability | Register, login, logout, protected pages | 30 minutes | Duplicate users, weak validation, session problems | Fill during testing |
-| CH-002 | Explore inventory data quality | Create, edit, delete inventory | 30 minutes | Duplicate SKU, negative values, decimal price problems | Fill during testing |
-| CH-003 | Explore stock update behavior | Add stock, remove stock, low stock state | 30 minutes | Stock below zero, incorrect status, race conditions | Fill during testing |
-| CH-004 | Explore supplier relationships | Supplier CRUD, supplier deletion with inventory | 30 minutes | Broken relationships, orphaned items, validation gaps | Fill during testing |
-| CH-005 | Explore restock workflow | Create order, partial receive, full receive | 30 minutes | Wrong totals, invalid dates, stock not updated | Fill during testing |
+| CH-001 | Explore authentication reliability | Register, login, logout, protected pages | 30 minutes | Duplicate users, weak validation, session problems | Valid login works; duplicate registration and wrong password are rejected; protected API routes reject missing bearer tokens |
+| CH-002 | Explore inventory data quality | Create, edit, delete inventory | 30 minutes | Duplicate SKU, negative values, decimal price problems | Unique item creation succeeds; duplicate SKU and negative stock are rejected |
+| CH-003 | Explore stock update behavior | Add stock, remove stock, low stock state | 30 minutes | Stock below zero, incorrect status, race conditions | Removing more stock than available clamps current stock to 0 instead of making it negative |
+| CH-004 | Explore supplier relationships | Supplier CRUD, supplier deletion with inventory | 30 minutes | Broken relationships, orphaned items, validation gaps | Supplier creation succeeds; invalid email is rejected; supplier relationship works during inventory creation |
+| CH-005 | Explore restock workflow | Create order, partial receive, full receive | 30 minutes | Wrong totals, invalid dates, stock not updated | Validation rollback defect was found and fixed; over-receiving is now rejected and order remains pending |
 
 ## Bug Report Log
 
 | Bug ID | Title | Severity | Priority | Environment | Steps To Reproduce | Expected Result | Actual Result | Evidence | Status |
 |---|---|---|---|---|---|---|---|---|---|
-| BUG-001 | Fill after testing | Major | P2 | Chrome, Windows, Laravel local | 1. Step one 2. Step two | Expected behavior | Actual behavior | Screenshot path | New |
+| BUG-001 | Restock receive invalid quantity used unsafe rollback handling | Major | P2 | Chrome, Windows, Laravel local | 1. Create restock order with quantity ordered 10. 2. Submit receive request with quantity received 11. | Validation error is returned and restock order remains pending. | Initial test exposed unsafe rollback behavior; controller was fixed and verified. | `evidence/black-box-acceptance-output.txt` | Fixed / Verified |
+| PERF-001 | Response time increases sharply under concurrent load | Major | P2 | K6 v2.0.0, Laravel local server, 1-50 VUs | Run K6 constant-load tests at 1, 10, 25, and 50 users. | System remains within acceptable response time under 50 users. | No HTTP failures, but p95 rose to 12.08s at 50 users. | `evidence/k6-performance-table.md`, `evidence/response-time-vs-user-load.svg` | Open / Performance bottleneck |
 
 ## Unit Test Evidence
 
